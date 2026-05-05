@@ -32,7 +32,8 @@
       "Bash(vercel env *)",
       "Bash(curl -s -X POST https://qqlandingclaw.vercel.app/api/generate -H 'Content-Type: application/json' -d '{\"model\":\"MiniMax-M2.7\",\"contents\":\"test\",\"config\":{\"systemInstruction\":\"hi\",\"responseMimeType\":\"application/json\"}}')",
       "Bash(vercel logs *)",
-      "Bash(vercel inspect *)"
+      "Bash(vercel inspect *)",
+      "Bash(git commit *)"
     ],
     "additionalDirectories": [
       "/Users/gimnapple/AAA-Projects/codex_test/qqlandingclaw"
