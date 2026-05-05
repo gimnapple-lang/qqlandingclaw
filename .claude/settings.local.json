@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -X POST http://localhost:3000/api/generate -H 'Content-Type: application/json' -d '{\"model\": \"MiniMax-M2.7\", \"contents\": \"群组 \\\\\"ACG 深夜食堂\\\\\" 的聊天历史：\\\\n测试消息\", \"config\": {\"systemInstruction\": \"你是一个助手。所有输出必须使用中文。\", \"responseMimeType\": \"application/json\"}}')",
+      "Bash(curl -s -X POST http://localhost:3000/api/generate -H 'Content-Type: application/json' -d '{ *)",
+      "WebFetch(domain:minimax-algeng-chat-tts.oss-cn-wulanchabu.aliyuncs.com)"
+    ]
+  }
+}
