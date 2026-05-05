@@ -82,6 +82,59 @@ function normalizeTopics(topics: unknown): TopicInfo[] {
   return [];
 }
 
+function normalizeMemes(memes: unknown): MemeInfo[] {
+  if (!memes) return [];
+  if (Array.isArray(memes)) {
+    return memes.map(m => {
+      if (typeof m === 'string') return { meme: m, count: 1, description: '', examples: [] };
+      if (m && typeof m === 'object') {
+        const obj = m as Record<string, unknown>;
+        const examples = Array.isArray(obj.examples || obj['例子'])
+          ? (obj.examples as unknown[]).map((ex: unknown) => {
+              if (typeof ex === 'object' && ex) {
+                const exObj = ex as Record<string, unknown>;
+                return { userName: String(exObj.userName || exObj['用户'] || '匿名'), text: String(exObj.text || exObj['内容'] || '') };
+              }
+              return { userName: '匿名', text: String(ex) };
+            })
+          : [];
+        return {
+          meme: String(obj.meme || obj['梗'] || obj.name || ''),
+          count: Number(obj.count || obj['次数'] || 1),
+          description: String(obj.description || obj['描述'] || ''),
+          examples,
+        };
+      }
+      return { meme: String(m), count: 1, description: '', examples: [] };
+    }).filter(m => m.meme);
+  }
+  if (typeof memes === 'object') {
+    return Object.values(memes as Record<string, unknown>).map(m => {
+      if (typeof m === 'string') return { meme: m, count: 1, description: '', examples: [] };
+      if (m && typeof m === 'object') {
+        const obj = m as Record<string, unknown>;
+        const examples = Array.isArray(obj.examples || obj['例子'])
+          ? (obj.examples as unknown[]).map((ex: unknown) => {
+              if (typeof ex === 'object' && ex) {
+                const exObj = ex as Record<string, unknown>;
+                return { userName: String(exObj.userName || exObj['用户'] || '匿名'), text: String(exObj.text || exObj['内容'] || '') };
+              }
+              return { userName: '匿名', text: String(ex) };
+            })
+          : [];
+        return {
+          meme: String(obj.meme || obj['梗'] || obj.name || ''),
+          count: Number(obj.count || obj['次数'] || 1),
+          description: String(obj.description || obj['描述'] || ''),
+          examples,
+        };
+      }
+      return { meme: String(m), count: 1, description: '', examples: [] };
+    }).filter(m => m.meme);
+  }
+  return [];
+}
+
 interface GenerateContentRequest {
   model: string;
   contents: unknown;
@@ -635,7 +688,7 @@ export default function App() {
       const data: AiInsight = {
         summary: raw.summary || raw['对话总结'] || '',
         recommendations: Array.isArray(raw.recommendations) ? raw.recommendations : (raw['建议回复'] || []).map((r: any) => r['内容'] || r),
-        memeRanking: Array.isArray(raw.memeRanking) ? raw.memeRanking : (raw['识别梗'] || []),
+        memeRanking: normalizeMemes(raw.memeRanking || raw['识别梗'] || []),
         recentTopics: normalizeTopics(raw.recentTopics || raw['最新话题'] || []),
       };
       setAiInsight(data);
